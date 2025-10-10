@@ -1,4 +1,8 @@
 import java.lang.System.exit
+import utils.readIntNotNull
+import utils.readNextInt
+import utils.readNextFloat
+import utils.readNextDouble
 
 fun main() {
     runMenu()
@@ -18,7 +22,7 @@ fun mainMenu() : Int {
         > |   0) Exit                      |
         > ----------------------------------
         > ==>> """.trimMargin(">"))
-    return readlnOrNull()?.toIntOrNull() ?: -1
+    return readNextInt(" > ==>>")
 }
 
 fun runMenu() {

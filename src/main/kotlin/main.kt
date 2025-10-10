@@ -1,9 +1,6 @@
 import io.github.oshai.kotlinlogging.KotlinLogging
 import java.lang.System.exit
-import utils.readIntNotNull
 import utils.readNextInt
-import utils.readNextFloat
-import utils.readNextDouble
 
 private val logger = KotlinLogging.logger {}
 

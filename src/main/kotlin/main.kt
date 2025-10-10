@@ -1,8 +1,11 @@
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.lang.System.exit
 import utils.readIntNotNull
 import utils.readNextInt
 import utils.readNextFloat
 import utils.readNextDouble
+
+private val logger = KotlinLogging.logger {}
 
 fun main() {
     runMenu()
@@ -40,19 +43,19 @@ fun runMenu() {
 }
 
 fun addNote(){
-    println("You chose Add Note")
+    logger.info { "addNote() function invoked"}
 }
 
 fun listNotes(){
-    println("You chose List Notes")
+    logger.info { "listNotes() function invoked"}
 }
 
 fun updateNote(){
-    println("You chose Update Note")
+    logger.info { "updateNote() function invoked"}
 }
 
 fun deleteNote(){
-    println("You chose Delete Note")
+    logger.info { "deleteNote() function invoked"}
 }
 
 fun exitApp(){

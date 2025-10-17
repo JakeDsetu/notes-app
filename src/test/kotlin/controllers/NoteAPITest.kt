@@ -124,4 +124,44 @@ class NoteAPITest {
             assertFalse(activeNotesString.contains("summer holiday"))
         }
     }
+
+    @Nested
+    inner class PriorityNotes{
+        @Test
+        fun `listNotesBySelectedPriority returns No Notes when ArrayList is empty`() {
+            assertEquals(0, emptyNotes!!.numberOfNotes())
+            assertTrue(emptyNotes!!.listNotesBySelectedPriority(2).lowercase().contains("no notes")
+            )
+        } //solution file used
+
+        @Test
+        fun `listNotesBySelectedPriority returns No Notes when No Notes of that selected priority exist` () {
+            assertEquals(5, populatedNotes!!.numberOfNotes())
+            val priority2String = populatedNotes!!.listNotesBySelectedPriority(2).lowercase()
+            assertTrue(priority2String.contains("no notes"))
+            assertTrue(priority2String.contains("2"))
+        } //solution file used
+
+        @Test
+        fun `listNotesBySelectedPriority displays Notes of a specified priority when matching notes are present`() {
+            assertEquals(5, populatedNotes!!.numberOfNotes())
+            val priority4String = populatedNotes!!.listNotesBySelectedPriority(4).lowercase()
+            assertTrue(priority4String.contains("2 note"))
+            assertTrue(priority4String.contains("priority 4"))
+            assertTrue(priority4String.contains("code app"))
+            assertTrue(priority4String.contains("test app"))
+            assertFalse(priority4String.contains("swim"))
+            assertFalse(priority4String.contains("learning kotlin"))
+            assertFalse(priority4String.contains("summer holiday"))
+            val priority5String = populatedNotes!!.listNotesBySelectedPriority(5).lowercase()
+            assertTrue(priority5String.contains("1 note"))
+            assertTrue(priority5String.contains("priority 5"))
+            assertFalse(priority5String.contains("code app"))
+            assertFalse(priority5String.contains("test app"))
+            assertFalse(priority5String.contains("swim"))
+            assertTrue(priority5String.contains("learning kotlin"))
+            assertFalse(priority5String.contains("summer holiday"))
+        }
+    } //solution file used
+
 }

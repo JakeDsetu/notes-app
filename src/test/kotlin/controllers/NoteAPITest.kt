@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import kotlin.test.assertFalse
 
 class NoteAPITest {
 
@@ -20,8 +21,8 @@ class NoteAPITest {
 
     @BeforeEach
     fun setup(){
-        learnKotlin = Note("Learning Kotlin", 5, "College", false)
-        summerHoliday = Note("Summer Holiday to France", 1, "Holiday", false)
+        learnKotlin = Note("Learning Kotlin", 5, "College", true)
+        summerHoliday = Note("Summer Holiday to France", 1, "Holiday", true)
         codeApp = Note("Code App", 4, "Work", false)
         testApp = Note("Test App", 4, "Work", false)
         swim = Note("Swim - Pool", 3, "Hobby", false)
@@ -84,6 +85,43 @@ class NoteAPITest {
             assertTrue(notesString.contains("test app"))
             assertTrue(notesString.contains("swim"))
             assertTrue(notesString.contains("summer holiday"))
+        }
+    }
+
+    @Nested
+    inner class ArchivedAndActiveNotes {
+        @Test
+        fun `listArchivedNotes returns no archived notes stored when ArrayList is empty`() {
+            assertEquals(0, emptyNotes!!.numberOfArchivedNotes())
+            assertTrue(emptyNotes!!.listArchivedNotes().lowercase().contains("no archived notes"))
+        } //solution file used
+
+        @Test
+        fun `listArchivedNotes returns Notes when ArrayList has archived notes stored`() {
+            assertEquals(2, populatedNotes!!.numberOfArchivedNotes())
+            val archivedNotesString = populatedNotes!!.listArchivedNotes().lowercase()
+            assertTrue(archivedNotesString.contains("learning kotlin"))
+            assertFalse(archivedNotesString.contains("code app"))
+            assertFalse(archivedNotesString.contains("test app"))
+            assertFalse(archivedNotesString.contains("swim"))
+            assertTrue(archivedNotesString.contains("summer holiday"))
+        } //solution file used
+
+        @Test
+        fun `listActiveNotes returns no active notes stored when ArrayList is empty`() {
+            assertEquals(0, emptyNotes!!.numberOfActiveNotes())
+            assertTrue(emptyNotes!!.listActiveNotes().lowercase().contains("no active notes"))
+        }
+
+        @Test
+        fun `listActiveNotes returns Notes when ArrayList has active notes stored`() {
+            assertEquals(3, populatedNotes!!.numberOfActiveNotes())
+            val activeNotesString = populatedNotes!!.listActiveNotes().lowercase()
+            assertFalse(activeNotesString.contains("learning kotlin"))
+            assertTrue(activeNotesString.contains("code app"))
+            assertTrue(activeNotesString.contains("test app"))
+            assertTrue(activeNotesString.contains("swim"))
+            assertFalse(activeNotesString.contains("summer holiday"))
         }
     }
 }

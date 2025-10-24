@@ -1,8 +1,11 @@
 package controllers
 
 import models.Note
+import persistence.Serializer
 
-class NoteAPI {
+class NoteAPI(serializerType: Serializer) {
+    private var serializer: Serializer = serializerType
+
     private var notes = ArrayList<Note>()
     fun add(note: Note): Boolean {
         return notes.add(note)
@@ -141,5 +144,15 @@ class NoteAPI {
 
         //if the note was not found, return false, indicating that the update was not successful
         return false
+    }
+
+    @Throws(Exception::class)
+    fun load() {
+        notes = serializer.read() as ArrayList<Note>
+    }
+
+    @Throws(Exception::class)
+    fun store() {
+        serializer.write(notes)
     }
 }

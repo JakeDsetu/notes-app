@@ -27,6 +27,7 @@ fun mainMenu() : Int {
         > |   4) Delete a note             |
         > |   5) Save notes                |
         > |   6) Load notes                |
+        > |   7) Archive notes             |
         > ----------------------------------
         > |   0) Exit                      |
         > ----------------------------------
@@ -44,6 +45,7 @@ fun runMenu() {
             4  -> deleteNote()
             5  -> save()
             6  -> load()
+            7  -> archiveNote()
             0  -> exitApp()
             else -> println("Invalid option entered: $option")
         }
@@ -86,6 +88,24 @@ fun updateNote(){
             }
         } else {
             println("There are no notes for this index number")
+        }
+    }
+}
+
+fun listActiveNotes() {
+    println(noteAPI.listActiveNotes())
+}
+
+fun archiveNote() {
+    listActiveNotes()
+    if (noteAPI.numberOfActiveNotes() > 0) {
+        //only ask the user to choose the note to archive if active notes exist
+        val indexToArchive = readNextInt("Enter the index of the note to archive: ")
+        //pass the index of the note to NoteAPI for archiving and check for success.
+        if (noteAPI.archiveNote(indexToArchive)) {
+            println("Archive Successful!")
+        } else {
+            println("Archive Not Successful")
         }
     }
 }

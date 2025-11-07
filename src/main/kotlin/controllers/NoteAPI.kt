@@ -72,6 +72,10 @@ class NoteAPI(serializerType: Serializer) {
             .toInt()
     }
 
+    fun searchByTitle (searchString : String) =
+        formatListString(notes.filter {note -> note.noteTitle.contains(searchString, ignoreCase = true) })
+
+
 
     //utility method to determine if an index is valid in a list.
     fun isValidListIndex(index: Int, list: List<Any>): Boolean {

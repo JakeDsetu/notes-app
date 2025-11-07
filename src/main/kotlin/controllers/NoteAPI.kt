@@ -10,17 +10,16 @@ class NoteAPI(serializerType: Serializer) {
     fun add(note: Note): Boolean {
         return notes.add(note)
     }
-    fun listAllNotes(): String {
-        return if (notes.isEmpty()) {
-            "No notes stored"
-        } else {
-            var listOfNotes = ""
-            for (i in notes.indices) {
-                listOfNotes += "${i}: ${notes[i]} \n"
-            }
-            listOfNotes
-        }
-    }
+
+    private fun formatListString(notesToFormat : List<Note>) : String =
+        notesToFormat
+            .joinToString (separator = "\n") { note ->
+                notes.indexOf(note).toString() + ": " + note.toString() }
+
+    fun listAllNotes(): String =
+        if (notes.isEmpty()) "No notes stored"
+        else notes.joinToString (separator = "\n") { note ->
+                notes.indexOf(note).toString() + ": " + note.toString() }
 
     fun numberOfNotes(): Int {
         return notes.size
@@ -30,34 +29,6 @@ class NoteAPI(serializerType: Serializer) {
         return if (isValidListIndex(index, notes)) {
             notes[index]
         } else null
-    }
-
-    fun listActiveNotes(): String {
-        return if (numberOfActiveNotes() == 0) {
-            "No active notes stored"
-        } else {
-            var listOfActiveNotes = ""
-            for (note in notes) {
-                if (!note.isNoteArchived) {
-                    listOfActiveNotes += "${notes.indexOf(note)}: $note \n"
-                }
-            }
-            listOfActiveNotes
-        }
-    } //solution file used partially
-
-    fun listArchivedNotes(): String {
-        return if (numberOfArchivedNotes() == 0) {
-            "No archived notes stored"
-        } else {
-            var listOfArchivedNotes = ""
-            for (note in notes) {
-                if (note.isNoteArchived) {
-                    listOfArchivedNotes += "${notes.indexOf(note)}: $note \n"
-                }
-            }
-            listOfArchivedNotes
-        }
     }
 
     fun numberOfArchivedNotes(): Int {
@@ -74,26 +45,25 @@ class NoteAPI(serializerType: Serializer) {
             .toInt()
     }
 
-    fun listNotesBySelectedPriority(priority: Int): String {
-        return if (notes.isEmpty()) {
-            "No notes stored"
-        } else {
-            var listOfNotes = ""
-            for (i in notes.indices) {
-                if (notes[i].notePriority == priority) {
-                    listOfNotes +=
-                        """
-                           $i: ${notes[i]}
-                        """.trimIndent()
-                }
-            }
-            if (listOfNotes.equals("")) {
-                "No notes with priority: $priority"
-            } else {
-                "${numberOfNotesByPriority(priority)} notes with priority $priority: $listOfNotes"
-            }
-        }
-    } //solution file used
+    fun listActiveNotes(): String =
+        if (numberOfActiveNotes() == 0) "No active notes stored"
+        else notes.filter { note -> !note.isNoteArchived }
+            .joinToString (separator = "\n")  {note ->
+                notes.indexOf(note).toString() + ": " + note.toString() }
+
+    fun listArchivedNotes(): String =
+        if (numberOfArchivedNotes() == 0) "No archived notes stored"
+        else notes.filter { note -> note.isNoteArchived }
+            .joinToString (separator = "\n")  { note ->
+                notes.indexOf(note).toString() + ": " + note.toString() }
+
+    fun listNotesBySelectedPriority(priority: Int): String =
+        if (notes.isEmpty()) "No notes stored"
+        else {
+            val listOfNotes = formatListString(notes.filter{ note -> note.notePriority == priority})
+            if (listOfNotes == "") "No notes with priority: $priority"
+            else "${numberOfNotesByPriority(priority)} notes with priority $priority: $listOfNotes"
+        } //Solution file used, formatListString created preemptively
 
     fun numberOfNotesByPriority(priority: Int): Int {
         return notes.stream()

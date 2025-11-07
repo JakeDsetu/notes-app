@@ -23,11 +23,12 @@ fun mainMenu() : Int {
         > | NOTE MENU                      |
         > |   1) Add a note                |
         > |   2) List notes                |
-        > |   3) Update a note             |
-        > |   4) Delete a note             |
-        > |   5) Save notes                |
-        > |   6) Load notes                |
-        > |   7) Archive notes             |
+        > |   3) Search notes              |
+        > |   4) Update a note             |
+        > |   5) Delete a note             |
+        > |   6) Save notes                |
+        > |   7) Load notes                |
+        > |   8) Archive notes             |
         > ----------------------------------
         > |   0) Exit                      |
         > ----------------------------------
@@ -41,11 +42,12 @@ fun runMenu() {
         when (option) {
             1  -> addNote()
             2  -> listNotes()
-            3  -> updateNote()
-            4  -> deleteNote()
-            5  -> save()
-            6  -> load()
-            7  -> archiveNote()
+            3  -> searchNotes()
+            4  -> updateNote()
+            5  -> deleteNote()
+            6  -> save()
+            7  -> load()
+            8  -> archiveNote()
             0  -> exitApp()
             else -> println("Invalid option entered: $option")
         }
@@ -120,6 +122,16 @@ fun listAllNotes() {
 
 fun listArchivedNotes() {
     println(noteAPI.listArchivedNotes())
+}
+
+fun searchNotes() {
+    val searchTitle = readNextLine("Enter the description to search by: ")
+    val searchResults = noteAPI.searchByTitle(searchTitle)
+    if (searchResults.isEmpty()) {
+        println("No notes found")
+    } else {
+        println(searchResults)
+    }
 }
 
 fun archiveNote() {

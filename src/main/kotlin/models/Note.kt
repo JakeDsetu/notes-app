@@ -1,8 +1,9 @@
 package models
 
 data class Note (var noteTitle: String,
+                 var noteDescription: String,
                  var notePriority: Int,
                  var noteCategory: String,
-                 var isNoteArchived: Boolean){
+                 var isNoteArchived: Boolean,){
 
 }

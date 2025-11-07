@@ -2,6 +2,7 @@ import controllers.NoteAPI
 import io.github.oshai.kotlinlogging.KotlinLogging
 import models.Note
 import persistence.XMLSerializer
+import utils.readNextChar
 import java.lang.System.exit
 import utils.readNextInt
 import utils.readNextLine
@@ -56,9 +57,10 @@ fun runMenu() {
 
 fun addNote(){
     val noteTitle = readNextLine("Enter a title for your note: ")
+    val noteDescription = readNextLine("Enter a description for the note: ")
     val notePriority = readNextInt("Enter a priority (1-low, 2, 3, 4, 5-high): ")
     val noteCategory = readNextLine("Enter a category for the note: ")
-    val isAdded = noteAPI.add(Note(noteTitle, notePriority, noteCategory, false))
+    val isAdded = noteAPI.add(Note(noteTitle, noteDescription, notePriority, noteCategory, false))
 
     if (isAdded) {
         println("Added Successfully")
@@ -97,11 +99,12 @@ fun updateNote(){
         val indexToUpdate = readNextInt("Enter the index of the note to update: ")
         if (noteAPI.isValidIndex(indexToUpdate)) {
             val noteTitle = readNextLine("Enter a title for the note: ")
+            val noteDescription = readNextLine("Enter a description for the note: ")
             val notePriority = readNextInt("Enter a priority (1-low, 2, 3, 4, 5-high): ")
             val noteCategory = readNextLine("Enter a category for the note: ")
 
             //pass the index of the note and new note details to NoteAPI for updating and check for success.
-            if (noteAPI.updateNote(indexToUpdate, Note(noteTitle, notePriority, noteCategory, false))){
+            if (noteAPI.updateNote(indexToUpdate, Note(noteTitle, noteDescription, notePriority, noteCategory, false))){
                 println("Update Successful")
             } else {
                 println("Update Failed")
@@ -125,7 +128,7 @@ fun listArchivedNotes() {
 }
 
 fun searchNotes() {
-    val searchTitle = readNextLine("Enter the description to search by: ")
+    val searchTitle = readNextLine("Enter the title to search by: ")
     val searchResults = noteAPI.searchByTitle(searchTitle)
     if (searchResults.isEmpty()) {
         println("No notes found")
